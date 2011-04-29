@@ -27,12 +27,12 @@ public abstract class ClipPeakFinder {
                     }
                     else {
                         //Silence for preview
-                        f.setReal(row, 0.0);
+                        //f.setReal(row, 0.0);
                     }
                 }
                 else {
                     //Silence for preview
-                    f.setReal(row, 0.0);
+                    //f.setReal(row, 0.0);
                 }
             }
         }

@@ -31,27 +31,27 @@ public class MatchResultsTest {
 
     @Test
     public void testBlueTitQuality() throws Throwable {
-        testQuality("gardenbirds", "blue-tit-alarm.wav", 0, 7.0f);
+        testQuality("gardenbirds", "blue-tit-alarm.wav", 0, 2.3f, 0.5f);
     }
 
     @Test
     public void testCoalTitQuality() throws Throwable {
-        testQuality("gardenbirds", "coal-tit-song.wav", 0, 8.7f);
+        testQuality("gardenbirds", "coal-tit-song.wav", 0, 3.9f, 2.0f);
     }
 
     @Test
     public void testCollaredDoveQuality() throws Throwable {
-        testQuality("gardenbirds", "collared-dove-song.wav", 0, 3.9f);
+        testQuality("gardenbirds", "collared-dove-song.wav", 0, 0.5f, 3.0f);
     }
 
     @Test
     public void testLesserSpottedWoodpeckerQuality() throws Throwable {
-        testQuality("gardenbirds", "lesser-spotted-woodpecker-drum.wav", 0, 4.9f);
+        testQuality("gardenbirds", "lesser-spotted-woodpecker-drum.wav", 0, 1.3f, 1.5f);
     }
 
     @Test
     public void testRobinQuality() throws Throwable {
-        testQuality("gardenbirds", "robin-song.wav", 0, 6.3f);
+        testQuality("gardenbirds", "robin-song.wav", 0, 2.1f, 0.9f);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class MatchResultsTest {
         System.out.println("Took " + duration + "ms, " + (duration/ITERATIONS) + "ms per iteration");
     }
 
-    public void testQuality(String directory, String wavFilename, int expectedPosition, float expectedScore) throws Throwable {
+    public void testQuality(String directory, String wavFilename, int expectedPosition, float expectedScore, float expectedDistanceFromNextMatch) throws Throwable {
         List<ClipMatch> matches = runMatcher(directory, wavFilename);
 
         assertThat("We got no results for " + wavFilename,
@@ -82,10 +82,27 @@ public class MatchResultsTest {
                 wavFilename, is(equalTo(expectedMatch.getClip().getName())));
 
         double matchDistance = expectedMatch.getDistance();
-        System.out.println("Match distance is: " + matchDistance);
 
         assertThat(wavFilename + " had a score of " + matchDistance + ". We expected less than " + expectedScore,
                 (matchDistance < expectedScore), is(true));
+
+        if(expectedPosition < matches.size() -1) {
+            double nextMatchDistance = matches.get(expectedPosition + 1).getDistance();
+            double distanceFromBestMatch = nextMatchDistance - matchDistance;
+
+             assertThat("The next match after the best for " + wavFilename + " is getting a bit close. It is only " + distanceFromBestMatch + " away from the best match. We at least than " + expectedDistanceFromNextMatch,
+                (distanceFromBestMatch > expectedDistanceFromNextMatch), is(true));
+        }
+
+        //Some debug
+        System.out.println("====================");
+        System.out.println("Testing: " + wavFilename);
+        System.out.println("====================");
+
+        for(ClipMatch match: matches) {
+            System.out.println(match.getClip().getName() + "  (" + match.getDistance() + ")");
+        }
+        System.out.println("");
     }
 
     private List<ClipMatch> runMatcher(String directory, String wavFilename) throws Throwable {

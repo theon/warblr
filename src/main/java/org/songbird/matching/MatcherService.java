@@ -32,7 +32,7 @@ public final class MatcherService {
         List<ClipMatch> matches = new ArrayList<ClipMatch>();
 
         for(IndexedClipPeaks indexedClipPeak: INDEXED_CLIPS) {
-            ClipPeakMap sourcePeakMap = new ClipPeakMap(sourceClip.copy(), indexedClipPeak.getLowPassFrequencyThreshold(), indexedClipPeak.getHighPassFrequencyThreshold());
+            ClipPeakMap sourcePeakMap = new ClipPeakMap(sourceClip/*.copy()*/, indexedClipPeak.getLowPassFrequencyThreshold(), indexedClipPeak.getHighPassFrequencyThreshold());
 
             ClipMatch match = getClosestPeakMatch(sourcePeakMap, indexedClipPeak);
 
@@ -47,7 +47,7 @@ public final class MatcherService {
     }
 
     protected static ClipMatch getClosestPeakMatch(ClipPeakMap sourcePeakMap, IndexedClipPeaks indexedClipPeaks) {
-        System.out.println("Getting closest peak match from: " + indexedClipPeaks.getClip().getName());
+        //System.out.println("Getting closest peak match from: " + indexedClipPeaks.getClip().getName());
 
         int windowSize = indexedClipPeaks.getNumOfFrames();
 

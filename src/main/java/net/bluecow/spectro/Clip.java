@@ -128,10 +128,10 @@ public class Clip {
         int n;
         in.mark(buf.length * 2);
         while ( (n = readFully(in, buf)) != -1) {
-            logger.finest("Read "+n+" bytes");
+//            logger.finest("Read "+n+" bytes");
             if (n != buf.length) {
                 // this should only happen at the end of the input file (last frame)
-                logger.warning("Only read "+n+" of "+buf.length+" bytes at frame " + frames.size());
+//                logger.warning("Only read "+n+" of "+buf.length+" bytes at frame " + frames.size());
                 
                 // pad with silence or there will be audible junk at end of clip
                 for (int i = n; i < buf.length; i++) {
@@ -151,12 +151,12 @@ public class Clip {
             long bytesToSkip = (frameSize * 2) / overlap;
             long bytesSkipped;
             if ( (bytesSkipped = in.skip(bytesToSkip)) != bytesToSkip) {
-                logger.info("Skipped " + bytesSkipped + " bytes, but wanted " + bytesToSkip + " at frame " + frames.size());
+//                logger.info("Skipped " + bytesSkipped + " bytes, but wanted " + bytesToSkip + " at frame " + frames.size());
             }
             in.mark(buf.length * 2);
         }
         
-        logger.info(String.format("Read %d frames from %s (%d bytes). frameSize=%d overlap=%d\n", frames.size(), name, frames.size() * buf.length, frameSize, overlap));
+//        logger.info(String.format("Read %d frames from %s (%d bytes). frameSize=%d overlap=%d\n", frames.size(), name, frames.size() * buf.length, frameSize, overlap));
     }
     
     /**
@@ -261,8 +261,6 @@ public class Clip {
         // TODO calculate sample offset into the initial frame
         final int initialFrame = sample / getFrameTimeSamples();
         final int numOfFrames = length / getFrameTimeSamples();
-
-        System.out.println("Initial Frame: " + sample + " / " + getFrameTimeSamples() + " = " + initialFrame);
         
         InputStream audioData = new InputStream() {
 
@@ -492,9 +490,6 @@ public class Clip {
     }
 
     public Clip subClip(int startFrame, int nFrames, int newFrameSize, int newOverlap) {
-
-        System.out.println(startFrame + ", " + nFrames + ", " + frameSize);
-
         InputStream in = null;
         try {
             // decode existing
