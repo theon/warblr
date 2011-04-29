@@ -6,14 +6,10 @@
 
     <groupId>songbird</groupId>
     <artifactId>songbird</artifactId>
-    <version>1.0</version>
+    <version>0.1</version>
+    <packaging>jar</packaging>
 
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>com.softsynth</groupId>-->
-            <!--<artifactId>jsyn</artifactId>-->
-            <!--<version>144</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.piotrwendykier</groupId>
             <artifactId>jtransforms</artifactId>

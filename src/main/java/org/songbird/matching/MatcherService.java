@@ -23,7 +23,7 @@ public final class MatcherService {
 
     public static final int FRAME_SEARCH_INCREMENT = 10;
 
-    public final static List<IndexedClipPeaks> INDEXED_CLIPS = getIndexedClips();
+    public final static List<IndexedClipPeaks> INDEXED_CLIPS = IndexService.getIndexedClipsPeaks();
 
     private MatcherService() {
     }
@@ -81,13 +81,5 @@ public final class MatcherService {
 
         double lowestAvgDistance = ((double)lowestTotalDistance/(double)indexedClipPeaks.getPeaks().size());
         return new ClipMatch(lowestDistanceStartFrame, lowestAvgDistance, indexedClipPeaks.getClip());
-    }
-
-    private static List<IndexedClipPeaks> getIndexedClips() {
-        try {
-            return IndexService.getIndexedClipsPeaks();
-        } catch (Exception e) {
-            return null;
-        }
     }
 }

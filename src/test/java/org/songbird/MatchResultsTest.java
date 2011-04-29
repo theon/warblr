@@ -9,6 +9,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -26,7 +27,7 @@ import static org.junit.Assert.*;
 public class MatchResultsTest {
 
     //TODO - make this relative, get resource from classpath
-    private static final String TEST_WAVS_DIR = "C:\\Users\\Ian\\IdeaProjects\\songbird\\src\\test\\resources\\wavs";
+    private static final String TEST_WAVS_DIR = "wavs";
 
     @Test
     public void testBlueTitQuality() throws Throwable {
@@ -89,9 +90,9 @@ public class MatchResultsTest {
 
     private List<ClipMatch> runMatcher(String directory, String wavFilename) throws Throwable {
 
-        Clip searchClip = Clip.newInstance(new File(TEST_WAVS_DIR + "\\" + directory + "\\" + wavFilename));
+        URL searchWavUrl = this.getClass().getClassLoader().getResource(TEST_WAVS_DIR + "/" + directory + "/" +  wavFilename);
+        Clip searchClip = Clip.newInstance(new File(searchWavUrl.toURI()));
         List<ClipMatch> matches = MatcherService.getNearestPeakMatches(searchClip);
-
 
         return matches;
     }
