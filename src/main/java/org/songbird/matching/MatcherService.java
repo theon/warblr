@@ -58,7 +58,7 @@ public final class MatcherService {
 
         final int lastStartCol = sourcePeakMap.getClip().getFrameCount() - windowSize;
 
-        int lowestTotalDistance = Integer.MAX_VALUE;
+        int lowestTotalDistance = ClipPeakMap.MAX_NEAREST_PEAK_DIST * indexedClipPeaks.getPeaks().size();
         int lowestDistanceStartFrame = 0;
 
         for (int startCol = 0; startCol < lastStartCol; startCol += FRAME_SEARCH_INCREMENT) {
@@ -80,6 +80,7 @@ public final class MatcherService {
         }
 
         double lowestAvgDistance = ((double)lowestTotalDistance/(double)indexedClipPeaks.getPeaks().size());
-        return new ClipMatch(lowestDistanceStartFrame, lowestAvgDistance, indexedClipPeaks.getClip());
+        double matchPercentage = (1 - (lowestAvgDistance/ClipPeakMap.MAX_NEAREST_PEAK_DIST)) * 100;
+        return new ClipMatch(lowestDistanceStartFrame, matchPercentage, indexedClipPeaks.getClip());
     }
 }

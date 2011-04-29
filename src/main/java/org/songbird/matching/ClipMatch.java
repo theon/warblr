@@ -13,11 +13,11 @@ public class ClipMatch implements Comparable<ClipMatch> {
     private Clip clip;
 
     private int indexFrame;
-    private double distance;
+    private double matchPercentage;
 
-    public ClipMatch(int indexFrame, double distance, Clip clip) {
+    public ClipMatch(int indexFrame, double matchPercentage, Clip clip) {
         this.indexFrame = indexFrame;
-        this.distance = distance;
+        this.matchPercentage = matchPercentage;
         this.clip = clip;
     }
 
@@ -25,8 +25,8 @@ public class ClipMatch implements Comparable<ClipMatch> {
         return indexFrame;
     }
 
-    public double getDistance() {
-        return distance;
+    public double getMatchPercentage() {
+        return matchPercentage;
     }
 
     public Clip getClip() {
@@ -38,6 +38,6 @@ public class ClipMatch implements Comparable<ClipMatch> {
     }
 
     public int compareTo(ClipMatch o) {
-        return Double.compare(distance, o.distance);
+        return Double.compare(o.matchPercentage, matchPercentage);
     }
 }

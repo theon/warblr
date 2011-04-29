@@ -19,8 +19,7 @@ public class ClipPeakMap {
     private int frameSize;
     private int numOfFrames;
 
-    private static final int MAX_NEAREST_PEAK_DIST = 10;
-    private static final int FREQ_PEAK_SEARCH_RANGE = 2;
+    public static final int MAX_NEAREST_PEAK_DIST = 5;
 
     public ClipPeakMap(Clip clip, int lowPassFrequencyThreshold, int highPassFrequencyThreshold) {
         this(clip.getFrameFreqSamples(), clip.getFrameCount());
@@ -44,15 +43,12 @@ public class ClipPeakMap {
         boolean found = false;
         int distance = 0;
 
-        for(; distance < MAX_NEAREST_PEAK_DIST; distance++) {
+        for(; distance <= MAX_NEAREST_PEAK_DIST; distance++) {
 
             final int startFrame = Math.max(frame - distance, 0);
             final int endFrame = Math.min(frame + distance, numOfFrames);
 
             for(int searchFrame = startFrame; searchFrame <= endFrame; searchFrame++) {
-
-//                final int startFreq = Math.max(frame - distance, 0);
-//                final int endFrame = Math.min(frame + distance, numOfFrames);
                 
                 if(isPeak(searchFrame, frequency)) {
                     found = true;

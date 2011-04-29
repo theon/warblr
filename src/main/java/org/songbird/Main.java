@@ -1,21 +1,15 @@
 package org.songbird;
 
 import net.bluecow.spectro.Clip;
-import net.bluecow.spectro.Frame;
 import net.bluecow.spectro.PlayerThread;
 import net.bluecow.spectro.SpectroEditSession;
-import org.songbird.ClipPeakMap;
-import org.songbird.IndexedClipPeaks;
 import org.songbird.matching.ClipMatch;
 import org.songbird.matching.MatcherService;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -64,7 +58,7 @@ public class Main {
         }
 
         for(ClipMatch match: matches) {
-            System.out.println(match.getClip().getName() + " (" + match.getIndexFrame() + ") = " + match.getDistance());
+            System.out.println(match.getClip().getName() + " (" + match.getIndexFrame() + ") = " + match.getMatchPercentage());
         }
 
         ClipMatch bestMatch = matches.get(0);
