@@ -27,27 +27,27 @@ public class MatchResultsTest {
 
     @Test
     public void testBlueTitQuality() throws Throwable {
-        testQuality("gardenbirds", "blue-tit-alarm.wav", 0, 5.0f);
+        testQuality("gardenbirds", "blue-tit-alarm.wav", 0, 8.0f);
     }
 
     @Test
     public void testCoalTitQuality() throws Throwable {
-        testQuality("gardenbirds", "coal-tit-song.wav", 0, 20.0f);
+        testQuality("gardenbirds", "coal-tit-song.wav", 0, 21.0f);
     }
 
     @Test
     public void testCollaredDoveQuality() throws Throwable {
-        testQuality("gardenbirds", "collared-dove-song.wav", 0, 30.0f);
+        testQuality("gardenbirds", "collared-dove-song.wav", 0, 60.0f);
     }
 
     @Test
     public void testLesserSpottedWoodpeckerQuality() throws Throwable {
-        testQuality("gardenbirds", "lesser-spotted-woodpecker-drum.wav", 0, 15.0f);
+        testQuality("gardenbirds", "lesser-spotted-woodpecker-drum.wav", 0, 34.0f);
     }
 
     @Test
     public void testRobinQuality() throws Throwable {
-        testQuality("gardenbirds", "robin-song.wav", 0, 9.0f);
+        testQuality("gardenbirds", "robin-song.wav", 0, 32.0f);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class MatchResultsTest {
 
         long duration = System.currentTimeMillis() - time;
 
-        assertThat("Performance is too slow!", duration < 4000, is(true));
+        assertThat("Performance is too slow!", duration < 260, is(true));
 
         System.out.println("Took " + duration + "ms, " + (duration/ITERATIONS) + "ms per iteration");
     }
