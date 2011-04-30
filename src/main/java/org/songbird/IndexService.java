@@ -1,6 +1,8 @@
 package org.songbird;
 
 import net.bluecow.spectro.Clip;
+import org.songbird.analysis.AnalysedClip;
+import org.songbird.analysis.IndexedClip;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
@@ -23,9 +25,9 @@ public final class IndexService {
 
     private final static String INDEX_WAV_DIR = "wavs/index";
 
-    public static List<IndexedClipPeaks> getIndexedClipsPeaks() {
+    public static List<IndexedClip> getIndexedClipsPeaks() {
 
-        List<IndexedClipPeaks> indexedClips = new ArrayList<IndexedClipPeaks>();
+        List<IndexedClip> indexedClips = new ArrayList<IndexedClip>();
 
         try {
             //TODO: Move to an external configuration file
@@ -41,8 +43,8 @@ public final class IndexService {
         return indexedClips;
     }
 
-    private static IndexedClipPeaks getIndexedClipPeaks(String indexWavFile, int lowPassFrequencyThreshold, int highPassFrequencyThreshold) throws URISyntaxException, UnsupportedAudioFileException, IOException {
+    private static IndexedClip getIndexedClipPeaks(String indexWavFile, int lowPassFrequencyThreshold, int highPassFrequencyThreshold) throws URISyntaxException, UnsupportedAudioFileException, IOException {
         URL indexWavUrl = IndexService.class.getClassLoader().getResource(INDEX_WAV_DIR + "/" + indexWavFile);
-        return new IndexedClipPeaks(Clip.newInstance(new File(indexWavUrl.toURI())), lowPassFrequencyThreshold, highPassFrequencyThreshold);
+        return new IndexedClip(Clip.newInstance(new File(indexWavUrl.toURI())), lowPassFrequencyThreshold, highPassFrequencyThreshold);
     }
 }

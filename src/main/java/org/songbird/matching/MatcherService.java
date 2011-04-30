@@ -1,9 +1,10 @@
 package org.songbird.matching;
 
 import net.bluecow.spectro.Clip;
-import org.songbird.ClipPeakMap;
+import org.songbird.analysis.AnalysedClip;
 import org.songbird.IndexService;
-import org.songbird.IndexedClipPeaks;
+import org.songbird.analysis.IndexedClip;
+import org.songbird.analysis.SearchClip;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -23,7 +24,7 @@ public final class MatcherService {
 
     public static final int FRAME_SEARCH_INCREMENT = 10;
 
-    public final static List<IndexedClipPeaks> INDEXED_CLIPS = IndexService.getIndexedClipsPeaks();
+    public final static List<IndexedClip> INDEXED_CLIPS = IndexService.getIndexedClipsPeaks();
 
     private MatcherService() {
     }
@@ -31,10 +32,10 @@ public final class MatcherService {
     public static List<ClipMatch> getNearestPeakMatches(Clip sourceClip) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         List<ClipMatch> matches = new ArrayList<ClipMatch>();
 
-        for(IndexedClipPeaks indexedClipPeak: INDEXED_CLIPS) {
-            ClipPeakMap sourcePeakMap = new ClipPeakMap(sourceClip/*.copy()*/, indexedClipPeak.getLowPassFrequencyThreshold(), indexedClipPeak.getHighPassFrequencyThreshold());
+        for(IndexedClip indexedClip: INDEXED_CLIPS) {
+            SearchClip searchClip = new SearchClip(sourceClip/*.copy()*/, indexedClip.getLowPassFrequencyThreshold(), indexedClip.getHighPassFrequencyThreshold());
 
-            ClipMatch match = getClosestPeakMatch(sourcePeakMap, indexedClipPeak);
+            ClipMatch match = getClosestPeakMatch(searchClip, indexedClip);
 
             if(match != null) {
                 matches.add(match);
@@ -46,27 +47,27 @@ public final class MatcherService {
         return matches;
     }
 
-    protected static ClipMatch getClosestPeakMatch(ClipPeakMap sourcePeakMap, IndexedClipPeaks indexedClipPeaks) {
-        //System.out.println("Getting closest peak match from: " + indexedClipPeaks.getClip().getName());
+    protected static ClipMatch getClosestPeakMatch(SearchClip searchClip, IndexedClip indexedClip) {
+        //System.out.println("Getting closest peak match from: " + indexedClip.getClip().getName());
 
-        int windowSize = indexedClipPeaks.getNumOfFrames();
+        int windowSize = indexedClip.getNumOfFrames();
 
 
-        if(sourcePeakMap.getClip().getFrameCount() < windowSize) {
-            windowSize = sourcePeakMap.getClip().getFrameCount();
+        if(searchClip.getClip().getFrameCount() < windowSize) {
+            windowSize = searchClip.getClip().getFrameCount();
         }
 
-        final int lastStartCol = sourcePeakMap.getClip().getFrameCount() - windowSize;
+        final int lastStartCol = searchClip.getClip().getFrameCount() - windowSize;
 
-        int lowestTotalDistance = ClipPeakMap.MAX_NEAREST_PEAK_DIST * indexedClipPeaks.getPeaks().size();
+        int lowestTotalDistance = AnalysedClip.MAX_NEAREST_PEAK_DIST * indexedClip.getPeaks().size();
         int lowestDistanceStartFrame = 0;
 
         for (int startCol = 0; startCol < lastStartCol; startCol += FRAME_SEARCH_INCREMENT) {
 
             int thisTotalDistance = 0;
 
-            for(IndexedClipPeaks.IndexedClipPeak peak: indexedClipPeaks.getPeaks()) {
-                thisTotalDistance += sourcePeakMap.getNearestPeakDistance(startCol + peak.getFrame(), peak.getFrequency());
+            for(IndexedClip.IndexedClipPeak peak: indexedClip.getPeaks()) {
+                thisTotalDistance += searchClip.getNearestPeakDistance(startCol + peak.getFrame(), peak.getFrequency());
 
                 if(thisTotalDistance > lowestTotalDistance) {
                     break;
@@ -79,8 +80,8 @@ public final class MatcherService {
             }
         }
 
-        double lowestAvgDistance = ((double)lowestTotalDistance/(double)indexedClipPeaks.getPeaks().size());
-        double matchPercentage = (1 - (lowestAvgDistance/ClipPeakMap.MAX_NEAREST_PEAK_DIST)) * 100;
-        return new ClipMatch(lowestDistanceStartFrame, matchPercentage, indexedClipPeaks.getClip());
+        double lowestAvgDistance = ((double)lowestTotalDistance/(double) indexedClip.getPeaks().size());
+        double matchPercentage = (1 - (lowestAvgDistance/ AnalysedClip.MAX_NEAREST_PEAK_DIST)) * 100;
+        return new ClipMatch(lowestDistanceStartFrame, matchPercentage, indexedClip.getClip());
     }
 }

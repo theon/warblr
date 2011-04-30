@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.songbird.matching.ClipMatch;
 import org.songbird.matching.MatcherService;
 
+import javax.swing.*;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -52,49 +53,52 @@ public class MatchResultsTest {
 
     @Test
     public void testPerformance() throws Throwable {
-        final int ITERATIONS = 5;
+        //String someString = JOptionPane.showInputDialog("A naff way to pause to get time to get the profiler running");
+
+        final int ITERATIONS = 10;
         final long time = System.currentTimeMillis();
 
         for(int i = 0; i< ITERATIONS; i++) {
-            runMatcher("gardenbirds", "lesser-spotted-woodpecker-drum.wav");
+            runMatcher("gardenbirds", "blue-tit-alarm.wav");
         }
 
         long duration = System.currentTimeMillis() - time;
+        long durationPerIteration = (duration/ITERATIONS);
 
-        assertThat("Performance is too slow!", duration < 260, is(true));
-
-        System.out.println("Took " + duration + "ms, " + (duration/ITERATIONS) + "ms per iteration");
+        System.out.println("Took " + duration + "ms, " + durationPerIteration + "ms per iteration");
+        
+        assertThat("Performance is too slow!", durationPerIteration < 500, is(true));
     }
 
     public void testQuality(String directory, String wavFilename, int expectedPosition, float expectedDistanceFromNextMatch) throws Throwable {
         List<ClipMatch> matches = runMatcher(directory, wavFilename);
-
-        assertThat("We got no results for " + wavFilename,
-                matches.isEmpty(), is(false));
-
-        ClipMatch expectedMatch = matches.get(expectedPosition);
-
-        assertThat(wavFilename + " didn't come back as the number " + expectedPosition + " result",
-                wavFilename, is(equalTo(expectedMatch.getClip().getName())));
-
-        if(expectedPosition < matches.size() -1) {
-            double matchDistance = expectedMatch.getMatchPercentage();
-            double nextMatchDistance = matches.get(expectedPosition + 1).getMatchPercentage();
-            double distanceFromBestMatch = matchDistance - nextMatchDistance;
-
-             assertThat("The next match after the best for " + wavFilename + " is getting a bit close. It is only " + distanceFromBestMatch + " away from the best match. We at least than " + expectedDistanceFromNextMatch,
-                (distanceFromBestMatch > expectedDistanceFromNextMatch), is(true));
-        }
 
         //Some debug
         System.out.println("====================");
         System.out.println("Testing: " + wavFilename);
         System.out.println("====================");
 
-        for(ClipMatch match: matches) {
-            System.out.println(match.getClip().getName() + "  (" + match.getMatchPercentage() + ")");
+        for(ClipMatch debugMatch: matches) {
+            System.out.println(debugMatch.getClip().getName() + "  (" + debugMatch.getMatchPercentage() + ")");
         }
         System.out.println("");
+
+        assertThat("We got no results for " + wavFilename,
+                matches.isEmpty(), is(false));
+
+        ClipMatch match = matches.get(expectedPosition);
+
+        assertThat(wavFilename + " didn't come back as the number " + expectedPosition + " result",
+                match.getClip().getName(), is(equalTo(wavFilename)));
+
+        if(expectedPosition < matches.size() -1) {
+            double matchDistance = match.getMatchPercentage();
+            double nextMatchDistance = matches.get(expectedPosition + 1).getMatchPercentage();
+            double distanceFromBestMatch = matchDistance - nextMatchDistance;
+
+             assertThat("The next match after the best for " + wavFilename + " is getting a bit close. It is only " + distanceFromBestMatch + " away from the best match. We at least than " + expectedDistanceFromNextMatch,
+                (distanceFromBestMatch > expectedDistanceFromNextMatch), is(true));
+        }
     }
 
     private List<ClipMatch> runMatcher(String directory, String wavFilename) throws Throwable {

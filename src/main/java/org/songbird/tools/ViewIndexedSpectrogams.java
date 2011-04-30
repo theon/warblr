@@ -1,7 +1,7 @@
 package org.songbird.tools;
 
 import net.bluecow.spectro.SpectroEditSession;
-import org.songbird.IndexedClipPeaks;
+import org.songbird.analysis.IndexedClip;
 import org.songbird.matching.MatcherService;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -16,7 +16,7 @@ import javax.sound.sampled.LineUnavailableException;
 public class ViewIndexedSpectrogams {
 
     public static void main(String[] args) throws LineUnavailableException {
-        for(IndexedClipPeaks indexedClipPeak: MatcherService.INDEXED_CLIPS) {
+        for(IndexedClip indexedClipPeak: MatcherService.INDEXED_CLIPS) {
             SpectroEditSession.createSession(indexedClipPeak.getClip());
         }
     }
