@@ -67,7 +67,7 @@ public class MatchResultsTest {
 
         System.out.println("Took " + duration + "ms, " + durationPerIteration + "ms per iteration");
         
-        assertThat("Performance is too slow!", durationPerIteration < 500, is(true));
+        assertThat("Performance is too slow!", durationPerIteration < 115, is(true));
     }
 
     public void testQuality(String directory, String wavFilename, int expectedPosition, float expectedDistanceFromNextMatch) throws Throwable {
