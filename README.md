@@ -1,3 +1,3 @@
-# Songbird
+# Warblr
 
-Some useful information will go here when Songbird becomes a bit more useful
+Some useful information will go here when Warblr becomes a bit more useful
