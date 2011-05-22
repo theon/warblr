@@ -6,8 +6,6 @@ import org.warblr.core.matching.ClipMatch;
 import org.warblr.core.matching.MatcherService;
 import org.warblr.core.util.TestClipUtils;
 
-import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -51,12 +49,11 @@ public class MatchResultsTest {
 
     @Test
     public void testBlackbirdQuality() throws Throwable {
+        testQuality("android", "blackbird-song.wav", 0, 10.0f);
         testQuality("gardenbirds", "blackbird-song.wav", 0, 10.0f);
     }
 
     /**
-     * None of the wood pigeons come back as first :(
-     * TODO: Find out why
      * 
      * @throws Throwable
      */
@@ -97,7 +94,7 @@ public class MatchResultsTest {
         System.out.println("====================");
 
         for(ClipMatch debugMatch: matches) {
-            System.out.println(debugMatch.getClip().getName() + "  (" + debugMatch.getMatchPercentage() + ")");
+            System.out.println(debugMatch.getIndexedClip().getClip().getName() + "  (" + debugMatch.getMatchPercentage() + ")");
         }
         System.out.println("");
 
@@ -108,12 +105,12 @@ public class MatchResultsTest {
 
 
         assertThat(wavFilename + " didn't come back as the number " + expectedPosition + " result",
-                match.getClip().getName().startsWith(wavFilenamePrefix), is(equalTo(true)));
+                match.getIndexedClip().getClip().getName().startsWith(wavFilenamePrefix), is(equalTo(true)));
 
         for(int nextMatchPosition = expectedPosition + 1; nextMatchPosition < matches.size(); nextMatchPosition++) {
 
             ClipMatch nextMatch = matches.get(nextMatchPosition);
-            if(!nextMatch.getClip().getName().startsWith(wavFilenamePrefix)) {
+            if(!nextMatch.getIndexedClip().getClip().getName().startsWith(wavFilenamePrefix)) {
                 double matchDistance = match.getMatchPercentage();
 
                 double nextMatchDistance = nextMatch.getMatchPercentage();

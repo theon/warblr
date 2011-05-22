@@ -3,6 +3,8 @@ package org.warblr.core.analysis;
 import net.bluecow.spectro.Clip;
 import net.bluecow.spectro.Frame;
 
+import java.util.TreeSet;
+
 /**
  * Created by IntelliJ IDEA.
  * User: Ian
@@ -20,7 +22,7 @@ public abstract class AnalysedClip {
     protected int lowPassFrequencyThreshold;
 
     private static final int AMPLITUDE_THRESHOLD = 5;
-    public static final int MAX_NEAREST_PEAK_DIST = 5;
+    public static final int MAX_NEAREST_PEAK_DIST = 6;
 
     public AnalysedClip(Clip clip, final int lowPassFrequencyThreshold, final int highPassFrequencyThreshold, boolean blankAudioDataNotAnalysed) {
         this.clip = clip;
@@ -53,7 +55,7 @@ public abstract class AnalysedClip {
         return max;
     }
 
-    protected void findPeaks(Clip clip, boolean blankAudioDataNotAnalysed) {
+    public void findPeaks(Clip clip, boolean blankAudioDataNotAnalysed) {
         double maxAmp = findMaxAmp(clip);
 
         for(int col = 0; col < clip.getFrameCount(); col++) {

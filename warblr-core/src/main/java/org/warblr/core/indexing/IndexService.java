@@ -31,7 +31,7 @@ public final class IndexService {
         try {
             //TODO: Move to an external configuration file
             indexedClips.add(getIndexedClipPeaks("bbc/collared-dove-song.wav", 0, 50, blankAudioDataNotAnalysed));
-            indexedClips.add(getIndexedClipPeaks("bbc/wood-pigeon-song.wav", 0, 75, blankAudioDataNotAnalysed));
+            indexedClips.add(getIndexedClipPeaks("bbc/wood-pigeon-song.wav", 10, 75, blankAudioDataNotAnalysed));
             indexedClips.add(getIndexedClipPeaks("bbc/blue-tit-alarm.wav", 50, 300, blankAudioDataNotAnalysed));
             indexedClips.add(getIndexedClipPeaks("bbc/coal-tit-song.wav", 50, 300, blankAudioDataNotAnalysed));
             indexedClips.add(getIndexedClipPeaks("bbc/lesser-spotted-woodpecker-drum.wav", 0, 150, blankAudioDataNotAnalysed));

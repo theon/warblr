@@ -22,7 +22,7 @@ import java.util.List;
  */
 public final class MatcherService {
 
-    public static final int FRAME_SEARCH_INCREMENT = 10;
+    public static final int FRAME_SEARCH_INCREMENT = 1;
 
     public final static List<IndexedClip> INDEXED_CLIPS = IndexService.getIndexedClipsPeaks(false);
 
@@ -83,6 +83,6 @@ public final class MatcherService {
 
         double lowestAvgDistance = ((double)lowestTotalDistance/(double) indexedClip.getPeaks().size());
         double matchPercentage = (1 - (lowestAvgDistance/ AnalysedClip.MAX_NEAREST_PEAK_DIST)) * 100;
-        return new ClipMatch(lowestDistanceStartFrame, matchPercentage, indexedClip.getClip());
+        return new ClipMatch(lowestDistanceStartFrame, matchPercentage, searchClip, indexedClip);
     }
 }
